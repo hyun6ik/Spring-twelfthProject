@@ -142,7 +142,7 @@ public class MemberRepositoryTest {
     public void findByNames() throws Exception {
         //given
         Member m1 = new Member("AAA", 10);
-        Member m2= new Member("AAA", 20);
+        Member m2= new Member("BBB", 20);
         memberRepository.save(m1);
         memberRepository.save(m2);
 
@@ -154,5 +154,22 @@ public class MemberRepositoryTest {
             System.out.println("member = " + member);
         }
         
+    }
+
+    @Test
+    public void returnType() throws Exception {
+        //given
+        Member m1 = new Member("AAA", 10);
+        Member m2= new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        //when
+        List<Member> aaa = memberRepository.findListByUsername("AAA");
+        Member findMember = memberRepository.findMemberByUsername("AAA");
+        Optional<Member> aaa1 = memberRepository.findOptionalByUsername("AAA");
+
+        //then
+
     }
 }
