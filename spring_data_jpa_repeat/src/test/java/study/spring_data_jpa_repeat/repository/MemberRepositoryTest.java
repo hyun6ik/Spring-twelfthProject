@@ -14,6 +14,8 @@ import study.spring_data_jpa_repeat.dto.MemberDto;
 import study.spring_data_jpa_repeat.entitiy.Member;
 import study.spring_data_jpa_repeat.entitiy.Team;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class MemberRepositoryTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired TeamRepository teamRepository;
+    @PersistenceContext EntityManager em;
 
     @Test
     public void memberTest() throws Exception {
@@ -225,6 +228,26 @@ public class MemberRepositoryTest {
         assertThat(page.getNumber()).isEqualTo(0);
         assertThat(page.isFirst()).isTrue();
         assertThat(page.hasNext()).isTrue();
+    }
+    @Test
+    public void bulkUpdateTest() throws Exception {
+        //given
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 19));
+        memberRepository.save(new Member("member3", 20));
+        memberRepository.save(new Member("member4", 21));
+        memberRepository.save(new Member("member5", 40));
+
+        //when
+        int resultCount = memberRepository.bulkAgePlus(20);
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertThat(resultCount).isEqualTo(3);
 
     }
+
+
 }
